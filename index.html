@@ -87,6 +87,15 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "4a641d0b76734cb38faab161729e0c53",
+      application: "lab9"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -95,12 +104,127 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
+
+      try {
+        if (operator === "/" && secondNum == "0") throw new calculatorError("Division by zero");
+      } catch (error) {
+          console.error("Cannot divide by zero");
+        }
+
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
+
+    window.onerror = function(errorMessage, url, lineNumber) {
+      console.log("Error: ", errorMessage, "at ", url, " at line ",lineNumber);
+      return true;
+    }
+
+    class calculatorError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "calculatorError";
+      }
+    }
+
+    const student = {
+      name: "David",
+      year: 2,
+      college: "Warren"
+    };
+
+    const sampleArray = [
+      {name: "Aidan", age: 10},
+      {name: "Brian", age: 20},
+      {name: "Charles", age: 30}
+    ];
+    
+    errorBtns.forEach((btn, index) => {
+      btn.addEventListener('click', () => {
+        switch(index) {
+          case 0:
+            console.log("This just shows a message in the console.");
+            break;
+          
+          case 1:
+            console.error("This is where you would explain the error.");
+            break;
+
+          case 2:
+            console.count("This method counts how many time it is used.");
+            break;
+
+          case 3:
+            console.warn("This is a demo of the console warn method.");
+            break;
+
+          case 4:
+            console.assert(student.year > 2, "Student is not an upperclassman.");
+            break;
+
+          case 5:
+            console.clear();
+            break;
+
+          case 6:
+            console.dir(student);
+            break;
+          
+          case 7:
+            console.dirxml(document.querySelector('form'));
+            break;
+
+          case 8:
+            console.group("Student Info");
+            console.log("Name:", student.name);
+            console.log("Year:", student.year);
+            console.log("College:", student.college);
+            break;
+
+          case 9:
+            console.groupEnd();
+            break;
+
+          case 10:
+            console.table(sampleArray);
+            break;
+
+          case 11:
+            console.time("Timer");
+            break;
+
+          case 12:
+            console.timeEnd("Timer");
+            break;
+
+          case 13:
+            function functionOne() {
+              functionTwo();
+            }
+
+            function functionTwo() {
+              functionThree();
+            }
+
+            function functionThree() {
+              console.trace("Console trace");
+            }
+
+            functionOne();
+            break;
+
+          case 14:
+            setTime(() => {
+              thisIsNotARealFunction();
+            }, 10);
+            break;
+        }
+      });
+    });
+
     // You may move this JS to another file if you wish
   </script>
 </body>
